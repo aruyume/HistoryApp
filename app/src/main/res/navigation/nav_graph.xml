@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/listsFragment">
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.historyapp.ui.fragment.history.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_historyDetailFragment"
+            app:destination="@id/historyDetailFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_historyDetailFragment2"
+            app:destination="@id/historyDetailFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_listsFragment"
+            app:destination="@id/listsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyDetailFragment"
+        android:name="com.example.historyapp.ui.fragment.history.HistoryDetailFragment"
+        android:label="fragment_history_detail"
+        tools:layout="@layout/fragment_history_detail" >
+        <action
+            android:id="@+id/action_historyDetailFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+        <argument
+            android:name="historyId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+    <fragment
+        android:id="@+id/listsFragment"
+        android:name="com.example.historyapp.ui.fragment.ListsFragment"
+        android:label="fragment_lists"
+        tools:layout="@layout/fragment_lists" >
+        <action
+            android:id="@+id/action_listsFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+    </fragment>
+</navigation>
