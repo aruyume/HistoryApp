@@ -26,6 +26,15 @@
                 android:layout_marginStart="10dp"
                 android:background="@drawable/ic_back" />
 
+            <ImageView
+                android:id="@+id/img_clearHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/ic_clear" />
+
             <TextView
                 android:id="@+id/tv_history"
                 android:layout_width="wrap_content"
@@ -37,6 +46,7 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -44,12 +54,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_history" />
+
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -61,4 +71,5 @@
         android:backgroundTint="@color/blue"
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/white" />
+
 </FrameLayout>

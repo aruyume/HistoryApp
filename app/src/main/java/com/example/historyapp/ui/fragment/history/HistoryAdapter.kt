@@ -11,11 +11,11 @@ import com.example.historyapp.databinding.ItemHistoryBinding
 class HistoryAdapter(private val onItemClick: (HistoryModel) -> Unit) :
     ListAdapter<HistoryModel, HistoryAdapter.HistoryViewHolder>(HistoryDiffCallback()) {
 
-    inner class HistoryViewHolder(private val binding: ItemHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class HistoryViewHolder(private val binding: ItemHistoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(historyModel: HistoryModel) {
             binding.tvTitle.text = historyModel.title
             binding.tvDescription.text = historyModel.description
-
             binding.root.setOnClickListener { onItemClick(historyModel) }
         }
     }
@@ -30,7 +30,7 @@ class HistoryAdapter(private val onItemClick: (HistoryModel) -> Unit) :
     }
 }
 
-class HistoryDiffCallback : DiffUtil.ItemCallback<HistoryModel>() {
+    class HistoryDiffCallback : DiffUtil.ItemCallback<HistoryModel>() {
     override fun areItemsTheSame(oldItem: HistoryModel, newItem: HistoryModel): Boolean {
         return oldItem.id == newItem.id
     }

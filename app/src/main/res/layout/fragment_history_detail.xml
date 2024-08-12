@@ -14,7 +14,6 @@
         android:background="@null"
         android:hint="@string/enter_title"
         android:padding="10dp"
-        android:letterSpacing="0.1"
         android:textColor="@color/white"
         android:textColorHint="@color/gray"
         android:textSize="16sp"
@@ -23,12 +22,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/relativeLayout" />
 
+    <ImageView
+        android:id="@+id/img_history"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_launcher_background"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_title" />
+
     <EditText
         android:id="@+id/et_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:letterSpacing="0.1"
         android:hint="@string/enter_description"
         android:padding="10dp"
         android:textColor="@color/white"
@@ -37,7 +45,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_title" />
+        app:layout_constraintTop_toBottomOf="@id/img_history" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -64,6 +72,7 @@
             android:text="@string/save"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

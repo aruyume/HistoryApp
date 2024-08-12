@@ -9,37 +9,31 @@
         android:id="@+id/historyFragment"
         android:name="com.example.historyapp.ui.fragment.history.HistoryFragment"
         android:label="fragment_history"
-        tools:layout="@layout/fragment_history" >
+        tools:layout="@layout/fragment_history">
         <action
             android:id="@+id/action_historyFragment_to_historyDetailFragment"
             app:destination="@id/historyDetailFragment" />
-        <action
-            android:id="@+id/action_historyFragment_to_historyDetailFragment2"
-            app:destination="@id/historyDetailFragment" />
-        <action
-            android:id="@+id/action_historyFragment_to_listsFragment"
-            app:destination="@id/listsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/historyDetailFragment"
-        android:name="com.example.historyapp.ui.fragment.history.HistoryDetailFragment"
+        android:name="com.example.historyapp.ui.fragment.historyDetail.HistoryDetailFragment"
         android:label="fragment_history_detail"
-        tools:layout="@layout/fragment_history_detail" >
-        <action
-            android:id="@+id/action_historyDetailFragment_to_historyFragment"
-            app:destination="@id/historyFragment" />
+        tools:layout="@layout/fragment_history_detail">
         <argument
             android:name="historyId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
+
     <fragment
         android:id="@+id/listsFragment"
-        android:name="com.example.historyapp.ui.fragment.ListsFragment"
+        android:name="com.example.historyapp.ui.fragment.lists.ListsFragment"
         android:label="fragment_lists"
-        tools:layout="@layout/fragment_lists" >
+        tools:layout="@layout/fragment_lists">
         <action
             android:id="@+id/action_listsFragment_to_historyFragment"
             app:destination="@id/historyFragment" />
     </fragment>
+
 </navigation>

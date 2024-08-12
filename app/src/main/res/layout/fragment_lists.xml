@@ -1,49 +1,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
-    android:orientation="vertical"
-    tools:context=".ui.fragment.ListsFragment">
+    android:background="@color/black"
+    tools:context=".ui.fragment.lists.ListsFragment">
 
-    <Button
-        android:id="@+id/btn_history"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_lists"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/bg_btn"
-        android:gravity="start"
-        android:padding="20dp"
-        android:text="@string/history"
-        android:textColor="@color/black"
-        android:textSize="23sp"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/btn_heroes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_history"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_btn"
-        android:gravity="start"
-        android:padding="20dp"
-        android:text="@string/heroes"
-        android:textColor="@color/black"
-        android:textSize="23sp"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/btn_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_heroes"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_btn"
-        android:gravity="start"
-        android:padding="20dp"
-        android:text="@string/locations"
-        android:textColor="@color/black"
-        android:textSize="23sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_lists" />
 </RelativeLayout>

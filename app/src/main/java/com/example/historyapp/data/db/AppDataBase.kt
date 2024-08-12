@@ -7,9 +7,9 @@ import androidx.room.RoomDatabase
 import com.example.historyapp.data.db.daos.HistoryDao
 import com.example.historyapp.data.model.HistoryModel
 
-// AppDatabase.kt
 @Database(entities = [HistoryModel::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
+
     abstract fun historyDao(): HistoryDao
 
     companion object {

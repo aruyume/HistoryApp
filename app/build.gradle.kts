@@ -52,15 +52,14 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     //Nav
-    val nav_version = "2.7.7"
-    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
-    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
     //Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    implementation(libs.kotlinx.coroutines.android.v139)
 
     //Lifecycle KTX
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
 
     //Koin
     implementation(libs.koin.android)
@@ -69,10 +68,6 @@ dependencies {
     implementation(libs.glide)
 
     //Room
-    val roomVersion = "2.6.1"
-    implementation("androidx.room:room-ktx:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
-
-
-
+    implementation(libs.room.ktx)
+    ksp(libs.androidx.room.compiler)
 }
