@@ -8,5 +8,6 @@ data class HistoryModel(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val description: String,
-    val image: String? = null
+    val image: String? = null,
+    val location: String? = null
 )

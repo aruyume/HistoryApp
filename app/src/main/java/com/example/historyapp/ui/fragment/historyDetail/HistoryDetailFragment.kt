@@ -27,9 +27,30 @@ class HistoryDetailFragment : BaseFragment<FragmentHistoryDetailBinding, History
     private val historyDetailViewModel: HistoryDetailViewModel by viewModel()
     private var isModified = false
     private var imageUri: Uri? = null
+    private var selectedLocation: String? = null
 
     override val viewModel: HistoryDetailViewModel
         get() = historyDetailViewModel
+
+    private val pickImageLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                val selectedImageUri: Uri? = data?.data
+                if (selectedImageUri != null) {
+                    try {
+                        val selectedImageBitmap = MediaStore.Images.Media.getBitmap(
+                            requireContext().contentResolver,
+                            selectedImageUri
+                        )
+                        binding.imgHistory.setImageBitmap(selectedImageBitmap)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                    imageUri = selectedImageUri
+                }
+            }
+        }
 
     override fun setupObservers() = with(binding) {
         super.setupObservers()
@@ -51,7 +72,11 @@ class HistoryDetailFragment : BaseFragment<FragmentHistoryDetailBinding, History
                     } else {
                         imgHistory.setImageResource(R.drawable.img_history)
                     }
+                } else {
+                    imgHistory.setImageResource(R.drawable.img_history)
                 }
+                selectedLocation = it.location
+                binding.tvLocation.text = selectedLocation
             }
         }
     }
@@ -67,7 +92,8 @@ class HistoryDetailFragment : BaseFragment<FragmentHistoryDetailBinding, History
                 id = historyId,
                 title = title,
                 description = description,
-                image = imageUri?.path
+                image = imageUri?.path,
+                location = selectedLocation
             )
             viewModel.saveHistory(historyModel)
             findNavController().navigateUp()
@@ -77,6 +103,13 @@ class HistoryDetailFragment : BaseFragment<FragmentHistoryDetailBinding, History
         }
         imgHistory.setOnClickListener {
             imageChooser()
+        }
+        btnChooseHero.setOnClickListener {
+            findNavController().navigate(R.id.action_historyDetailFragment_to_heroesFragment)
+        }
+        btnChooseLocation.setOnClickListener {
+            val action = HistoryDetailFragmentDirections.actionHistoryDetailFragmentToLocationFragment()
+            findNavController().navigate(action)
         }
     }
 
@@ -118,26 +151,6 @@ class HistoryDetailFragment : BaseFragment<FragmentHistoryDetailBinding, History
             override fun afterTextChanged(s: Editable?) {}
         })
     }
-
-    private val pickImageLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = result.data
-                val selectedImageUri: Uri? = data?.data
-                if (selectedImageUri != null) {
-                    try {
-                        val selectedImageBitmap = MediaStore.Images.Media.getBitmap(
-                            requireContext().contentResolver,
-                            selectedImageUri
-                        )
-                        binding.imgHistory.setImageBitmap(selectedImageBitmap)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
-                    imageUri = selectedImageUri
-                }
-            }
-        }
 
     private fun imageChooser() {
         val intent = Intent().apply {

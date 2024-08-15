@@ -9,13 +9,16 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.historyapp.data.db.daos.HeroDao
 import com.example.historyapp.data.model.HistoryModel
 import com.example.historyapp.data.db.daos.HistoryDao
+import com.example.historyapp.data.db.daos.LocationDao
 import com.example.historyapp.data.model.HeroModel
+import com.example.historyapp.data.model.LocationModel
 
-@Database(entities = [HistoryModel::class, HeroModel::class], version = 2) // Updated version from 1 to 2
+@Database(entities = [HistoryModel::class, HeroModel::class, LocationModel::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun historyDao(): HistoryDao
     abstract fun heroDao(): HeroDao
+    abstract fun locationDao(): LocationDao
 
     companion object {
         @Volatile
@@ -26,10 +29,9 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "history-database, hero-database"
+                    "app-database"
                 )
                     .addMigrations(MIGRATION_1_2)
-                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance
@@ -38,7 +40,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE HistoryModel ADD COLUMN newColumnName TEXT")
+                database.execSQL("ALTER TABLE history_table ADD COLUMN location TEXT")
             }
         }
     }

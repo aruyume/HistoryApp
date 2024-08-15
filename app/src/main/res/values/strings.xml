@@ -12,4 +12,6 @@
     <string name="enter_name">Enter name</string>
     <string name="enter_surname">Enter surname</string>
     <string name="heroes_">Heroes</string>
+    <string name="location">Location</string>
+    <string name="enter_location">Enter location</string>
 </resources>

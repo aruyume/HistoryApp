@@ -24,7 +24,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding, HistoryViewModel>(
         with(binding) {
             btnAdd.setOnClickListener {
                 val action =
-                    HistoryFragmentDirections.actionHistoryFragmentToHistoryDetailFragment(0) // Passing 0 as historyId for a new item
+                    HistoryFragmentDirections.actionHistoryFragmentToHistoryDetailFragment(0)
                 findNavController().navigate(action)
             }
             imgClearHistory.setOnClickListener {

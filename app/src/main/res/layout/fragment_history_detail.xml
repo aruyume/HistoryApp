@@ -24,9 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
+        android:ellipsize="end"
         android:hint="@string/enter_title"
         android:letterSpacing="0.1"
-        android:ellipsize="end"
         android:maxLines="3"
         android:padding="10dp"
         android:textColor="@color/white"
@@ -35,7 +35,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_history" />
+        app:layout_constraintTop_toBottomOf="@id/btn_chooseLocation" />
 
     <EditText
         android:id="@+id/et_description"
@@ -53,6 +53,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_title" />
+
+    <Button
+        android:id="@+id/btn_chooseHero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="choose hero"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_history" />
+
+    <Button
+        android:id="@+id/btn_chooseLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="choose location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_chooseHero" />
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_description"
+        tools:text="Location" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"

@@ -15,5 +15,8 @@ val databaseModule = module {
     single {
         get<AppDatabase>().heroDao()
     }
+    single {
+        get<AppDatabase>().locationDao()
+    }
 
 }
