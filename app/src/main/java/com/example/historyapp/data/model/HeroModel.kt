@@ -3,10 +3,9 @@ package com.example.historyapp.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "history_table")
-data class HistoryModel(
+@Entity(tableName = "hero_table")
+data class HeroModel(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val title: String,
-    val description: String,
-    val image: String? = null
+    val name: String,
+    val surname: String
 )

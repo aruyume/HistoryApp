@@ -33,7 +33,9 @@ class ListsFragment : Fragment() {
 
     private fun setupRecyclerView() = with(binding) {
         val items = listOf(
-            ListsModel("History", R.id.action_listsFragment_to_historyFragment)
+            ListsModel("History", R.id.action_listsFragment_to_historyFragment),
+            ListsModel("Heroes", R.id.action_listsFragment_to_heroesFragment),
+            ListsModel("Location", R.id.action_listsFragment_to_locationFragment)
         )
 
         listsAdapter = ListsAdapter { listModel ->

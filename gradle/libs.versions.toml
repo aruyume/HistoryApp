@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.0"
+compilerVersion = "4.12.0"
 glide = "4.16.0"
 koinAndroid = "3.5.6"
 kotlin = "2.0.10"
@@ -24,6 +25,7 @@ androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fr
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationFragmentKtx" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compilerVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

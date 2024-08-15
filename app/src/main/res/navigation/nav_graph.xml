@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph.xml"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/listsFragment">
 
     <fragment
@@ -34,6 +34,38 @@
         <action
             android:id="@+id/action_listsFragment_to_historyFragment"
             app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_listsFragment_to_heroesFragment"
+            app:destination="@id/heroesFragment" />
+        <action
+            android:id="@+id/action_listsFragment_to_locationFragment"
+            app:destination="@id/locationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/heroesFragment"
+        android:name="com.example.historyapp.ui.fragment.heroes.HeroesFragment"
+        android:label="fragment_heroes"
+        tools:layout="@layout/fragment_heroes" >
+        <action
+            android:id="@+id/action_heroesFragment_to_heroDetailFragment"
+            app:destination="@id/heroesDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="com.example.historyapp.ui.fragment.location.LocationFragment"
+        android:label="fragment_location"
+        tools:layout="@layout/fragment_location" />
+
+    <fragment
+        android:id="@+id/heroesDetailFragment"
+        android:name="com.example.historyapp.ui.fragment.heroesDetail.HeroesDetailFragment"
+        android:label="fragment_heroes_detail"
+        tools:layout="@layout/fragment_heroes_detail">
+            <argument
+                android:name="heroesId"
+                app:argType="integer" />
     </fragment>
 
 </navigation>

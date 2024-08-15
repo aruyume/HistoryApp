@@ -1,5 +1,7 @@
 package com.example.historyapp.di
 
+import com.example.historyapp.ui.fragment.heroes.HeroesViewModel
+import com.example.historyapp.ui.fragment.heroesDetail.HeroesDetailViewModel
 import com.example.historyapp.ui.fragment.history.HistoryViewModel
 import com.example.historyapp.ui.fragment.historyDetail.HistoryDetailViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -12,5 +14,11 @@ val viewModelModule: Module = module {
     }
     viewModel {
         HistoryDetailViewModel(get())
+    }
+    viewModel {
+        HeroesViewModel(get())
+    }
+    viewModel {
+        HeroesDetailViewModel(get())
     }
 }

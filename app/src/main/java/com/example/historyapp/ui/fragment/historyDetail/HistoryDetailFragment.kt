@@ -1,156 +1,149 @@
 package com.example.historyapp.ui.fragment.historyDetail
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.historyapp.R
 import com.example.historyapp.data.model.HistoryModel
 import com.example.historyapp.databinding.FragmentHistoryDetailBinding
+import com.example.historyapp.ui.fragment.base.fragments.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
+import java.io.IOException
 
-class HistoryDetailFragment : Fragment() {
-
-    private val binding by lazy {
-        FragmentHistoryDetailBinding.inflate(layoutInflater)
-    }
+class HistoryDetailFragment : BaseFragment<FragmentHistoryDetailBinding, HistoryDetailViewModel>(
+    FragmentHistoryDetailBinding::inflate
+) {
     private val args: HistoryDetailFragmentArgs by navArgs()
     private val historyDetailViewModel: HistoryDetailViewModel by viewModel()
-
     private var isModified = false
-    private val REQUEST_IMAGE_CAPTURE = 1
-    private val REQUEST_IMAGE_PICK = 2
+    private var imageUri: Uri? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return binding.root
-    }
+    override val viewModel: HistoryDetailViewModel
+        get() = historyDetailViewModel
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupListener()
-        textWatcher()
-        loadData()
-    }
-
-    private fun loadData() = with(binding) {
-        val historyId = args.historyId
-        historyDetailViewModel.loadHistory(historyId)
-        historyDetailViewModel.history.observe(viewLifecycleOwner) { history ->
+    override fun setupObservers() = with(binding) {
+        super.setupObservers()
+        viewModel.loadHistory(args.historyId)
+        viewModel.history.observe(viewLifecycleOwner) { history ->
             history?.let {
                 etTitle.setText(it.title)
                 etDescription.setText(it.description)
-                if (historyId == 0) {
-                    btnSave.visibility = View.VISIBLE
-                } else {
-                    btnSave.visibility = View.GONE
+                isModified = it.title != viewModel.history.value?.title ||
+                        it.description != viewModel.history.value?.description
+                btnSave.visibility =
+                    if (args.historyId == 0 || isModified) View.VISIBLE else View.GONE
+
+                if (it.image != null) {
+                    val imageFile = File(it.image)
+                    if (imageFile.exists()) {
+                        val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
+                        imgHistory.setImageBitmap(bitmap)
+                    } else {
+                        imgHistory.setImageResource(R.drawable.img_history)
+                    }
                 }
             }
         }
     }
 
-    private fun setupListener() = with(binding) {
+    override fun setupClickListeners() = with(binding) {
+        super.setupClickListeners()
         btnSave.setOnClickListener {
             val title = etTitle.text.toString()
             val description = etDescription.text.toString()
+            val historyId = if (args.historyId == 0) 0 else args.historyId
 
-            val historyId = if (args.historyId == 0) {
-                0
-            } else {
-                args.historyId
-            }
-
-            val historyModel = HistoryModel(id = historyId, title = title, description = description)
-
-            historyDetailViewModel.saveHistory(historyModel)
-
+            val historyModel = HistoryModel(
+                id = historyId,
+                title = title,
+                description = description,
+                image = imageUri?.path
+            )
+            viewModel.saveHistory(historyModel)
             findNavController().navigateUp()
         }
         imgBack.setOnClickListener {
             findNavController().navigateUp()
         }
         imgHistory.setOnClickListener {
-            showImagePickerOptions()
+            imageChooser()
         }
     }
 
-    private fun textWatcher() = with(binding) {
-        val textWatcher = object : TextWatcher {
+    override fun initViews() = with(binding) {
+        super.initViews()
+        etTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val title = etTitle.text.toString()
                 val description = etDescription.text.toString()
-                isModified = title != (historyDetailViewModel.history.value?.title ?: "") ||
-                        description != (historyDetailViewModel.history.value?.description ?: "")
-                btnSave.visibility = if (title.isNotEmpty() && description.isNotEmpty() && (args.historyId == 0 || isModified)) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+                isModified = title != (viewModel.history.value?.title ?: "") ||
+                        description != (viewModel.history.value?.description ?: "")
+                btnSave.visibility =
+                    if (title.isNotEmpty() && description.isNotEmpty() && (args.historyId == 0 || isModified)) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
             }
+
             override fun afterTextChanged(s: Editable?) {}
-        }
-        etTitle.addTextChangedListener(textWatcher)
-        etDescription.addTextChangedListener(textWatcher)
-    }
+        })
 
-    private fun showImagePickerOptions() {
-        val options = arrayOf("Take Photo", "Choose from Gallery")
-        val builder = android.app.AlertDialog.Builder(requireContext())
-        builder.setTitle("Select Photo")
-        builder.setItems(options) { _, which ->
-            when (which) {
-                0 -> dispatchTakePictureIntent()
-                1 -> dispatchPickPictureIntent()
+        etDescription.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val title = etTitle.text.toString()
+                val description = etDescription.text.toString()
+                isModified = title != (viewModel.history.value?.title ?: "") ||
+                        description != (viewModel.history.value?.description ?: "")
+                btnSave.visibility =
+                    if (title.isNotEmpty() && description.isNotEmpty() && (args.historyId == 0 || isModified)) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
             }
-        }
-        builder.show()
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 
-    private fun dispatchTakePictureIntent() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), REQUEST_IMAGE_CAPTURE)
-        } else {
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-            }
-        }
-    }
-
-    private fun dispatchPickPictureIntent() {
-        val pickPhotoIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(pickPhotoIntent, REQUEST_IMAGE_PICK)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                REQUEST_IMAGE_CAPTURE -> {
-                    val imageBitmap = data?.extras?.get("data") as Bitmap
-                    binding.imgHistory.setImageBitmap(imageBitmap)
-                }
-                REQUEST_IMAGE_PICK -> {
-                    val selectedImageUri: Uri? = data?.data
-                    binding.imgHistory.setImageURI(selectedImageUri)
+    private val pickImageLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                val selectedImageUri: Uri? = data?.data
+                if (selectedImageUri != null) {
+                    try {
+                        val selectedImageBitmap = MediaStore.Images.Media.getBitmap(
+                            requireContext().contentResolver,
+                            selectedImageUri
+                        )
+                        binding.imgHistory.setImageBitmap(selectedImageBitmap)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                    imageUri = selectedImageUri
                 }
             }
         }
+
+    private fun imageChooser() {
+        val intent = Intent().apply {
+            type = "image/*"
+            action = Intent.ACTION_GET_CONTENT
+        }
+        pickImageLauncher.launch(Intent.createChooser(intent, "Select Picture"))
     }
 }
